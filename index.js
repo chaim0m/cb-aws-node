@@ -1,8 +1,9 @@
 const couchbase = require("couchbase");
+require('dotenv').config()
 
-const cluster = new couchbase.Cluster("ec2-18-184-111-89.eu-central-1.compute.amazonaws.com:8091", {
-    username: "chaim",
-    password: "123456",
+const cluster = new couchbase.Cluster(process.env.DB_URL, {
+    username: process.env.DB_USER,
+    password: process.env.DB_PASS,
 });
 
 const bucket = cluster.bucket("users");

@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "couchbase": "^3.0.4"
+    "couchbase": "^3.0.4",
+    "dotenv": "^8.2.0"
   }
 }
