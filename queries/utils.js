@@ -1,33 +1,28 @@
-let operations = require("./operations")
-let util = require("util")
-
-const  callWrapper = async (callOperation, doc) => {
-    console.log("inside wrapped function")
-    let startTime = Date.now()
-    let func = operations[callOperation]
-    let res = await func(doc)
-    let totalTime = Date.now() - startTime
-    console.log("total time for operation: "+ totalTime)
+const  withAverage = (users) => {
     let ages = []
-    let average
-    let returnWithTimes = res.map(r => {
-        if (r && r.res && r.res.value && r.res.value.age){
-            ages.push(r.res.value.age)
-        } else {
-            average = new Error("Age not present in some documents")
+    let average = 0
+    let missingUser = false
+    users.map((userWtime) => {
+        if (!userWtime){
+            missingUser = true
+            return
         }
-        return {
-            user: r.res.value,
-            time: `${r.time}ms`
+        if (userWtime.user && userWtime.user.age) {
+            ages.push(userWtime.age)
+            return
         }
+        average = new Error("Age not present in some documents")  // not throwing error to allow return of users in case of missing age on some users
     })
-    console.log("returnWithTimes: "+returnWithTimes)
-    if (typeof average !== 'Error'){
+    if (typeof average === 'number'){
         average = ages.reduce((total, next) => total + next, 0) / ages.length;
     }
-    console.log("returnWithTimes: "+ util.inspect(returnWithTimes))
-    console.log("averageAge: "+average)
-    return returnWithTimes, average
+    if (missingUser){
+        throw new Error("Some of the user keys do not exist")  //assumption is that if a user is missing an error needs to be thrown as this is a critical issue
+    }
+    return {
+        users,
+        average
+    }
 }
 
-module.exports = { callWrapper }
+module.exports = { withAverage }

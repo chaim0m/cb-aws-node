@@ -11,10 +11,17 @@ const upsert = async (doc) => {  //used to insert data from here
         return error
     }
 }
-const getUsersByIds =  (userIds) => {
-    return Promise.all(userIds.map(userId => {
-        return getUserByKey(userId).catch(err => console.log(`${err} - get failed for user ID ${userId}`))
-    })).catch(err => new Error("get failed for all documents: "+err))
+const getUsersByIds =  async (userIds) => {
+    try {
+        let users =  await Promise.all(userIds.map(userId => {   //parallel calls to db
+            return getUserByKey(userId).catch(err => console.log(`${err} - get failed for user ID ${userId}`))
+        }))
+        return users
+    } catch(error) {
+        throw error
+    }
+
+
 }
 
 const getUserByKey =  (id) => {
@@ -24,7 +31,7 @@ const getUserByKey =  (id) => {
         const result =  db.collection.get(docKey).then(res => {
             let totalTime = Date.now() - startTime
             return {
-                res,
+                user: res.value,
                 time: totalTime
             }
         })
