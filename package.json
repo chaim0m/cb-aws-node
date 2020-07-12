@@ -12,7 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "couchbase": "^3.0.4",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "readme-md-generator": "^1.0.0"
   },
   "devDependencies": {
     "mocha": "^8.0.1",
