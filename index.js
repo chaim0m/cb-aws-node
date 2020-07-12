@@ -1,7 +1,8 @@
-let wrappedDb = require("./queries/utils")
+let withAverage = require("./queries/utils").withAverage
+let operations = require("./queries/operations")
 
 
 
 console.log("Starting index.js")
-wrappedDb.callWrapper('getUsersByIds', [1,11,111])
+//running this file will return these 3 users with the time of each call (on same object) and average
 

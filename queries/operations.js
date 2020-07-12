@@ -1,9 +1,8 @@
 let db = require("../db")
 const BUCKET = "users"
 const TYPE = "user"
-let util = require("util")
 
-const upsert = async (doc) => {
+const upsert = async (doc) => {  //used to insert data from here
     try {
         const key = `${doc.type}:${doc.user_id}`;
         const result = await db.collection.upsert(key, doc);
